@@ -16,6 +16,6 @@ def home():
     return render_template('login.html')
 
 def main():
-    api.run(debug = True)
+    api.run()
 
 if __name__ == "__main__": main()
