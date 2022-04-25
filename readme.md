@@ -6,7 +6,9 @@ to run first install:
 - SqlAlchemy
 - Flask
 
-for the program to work properly with the already built db, after cloning the repo to VSC, move library.db outside of the cloned folder
+**if using a VM to run**
+for the program to work properly with the already built db,
+after cloning the repository to VSC, move library.db outside of the cloned folder
 
 The app is built as a basic library, for the use of the library team.
 the admin has the options to add and remove books and customers from the system acting as the manager of the library
