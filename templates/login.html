@@ -1,0 +1,22 @@
+{%extends 'layout.html'%}
+{%block title%}Home page{%endblock%}
+{%block homeactive%}active{%endblock%}
+{%block content%}
+<h1 class="heading">
+    Welcome to the library
+    <br>
+    <small class="text-muted">Please Log in</small>
+</h1>
+<br>
+<div class="center">
+<form>
+    <div class="form-floating margined">
+        <input type="text" name="name" placeholder="Admin / User" class="form-control" id="floatingInputValue">
+        <label for="floatingInputValue">Username: admin / user (only lowercase!)</label>
+    </div>
+    <div class="form-floating margined" style="padding-left: 40%; padding-right: 40%">
+        <input type="submit" class="form-control" id="floatingInputValue">
+    </div>
+</form>
+</div>
+{%endblock%}

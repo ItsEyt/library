@@ -1,0 +1,63 @@
+{%extends 'layout.html'%}
+{%block title%}Customers{%endblock%}
+{%block customeractive%}active{%endblock%}
+{%block content%}
+<a type="button" class="btn btn-info btn-lg margined" href="./">All customers</a>
+{%if request.blueprint == 'admin'%}
+    <a type="button" class="btn btn-info btn-lg margined" href="./add">Add a customer</a>
+{%endif%}
+<a type="button" class="btn btn-info btn-lg margined" href="./search">Search a customer</a>
+<!-- shows add customer form when pressed -->
+{%if action == 'add'%}
+    <form method="post">
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="text" name="name" placeholder="Customer name" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Name:</label>
+            <div id="passwordHelpInline" class="form-text" class="form-text">
+                Full name
+            </div>
+        </div>
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="text" name="city" placeholder="author name" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">City:</label>
+            <div id="passwordHelpInline" class="form-text">
+                leave blank if unknown
+            </div>
+        </div>
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="number" name="age" placeholder="20" step="1" min="0" max="120" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Age:</label>
+            <div id="passwordHelpInline" class="form-text">
+                leave blank if unknown
+            </div>
+        </div>
+        <div class="form-floating margined" style="width: 15%">
+            <input type="submit" class="form-control" id="floatingInputValue">
+        </div>
+    </form>
+<!-- shows search customer form when pressed -->
+{%elif action == 'search'%}
+    <form method="post">
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="text" name="name" placeholder="Name" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Customer name:</label>
+        </div>
+    </form>
+{%endif%}
+<!-- customer collection. always shown -->
+<div class="row row-cols-1 row-cols-md-4 g-4 margined">
+{%for customer in customers%}
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-body">
+            <h5 class="card-title">{{customer.name}}</h5>
+            <p class="card-text">City: {{customer.city}} <br> Age: {{customer.age}}</p>
+            {%if request.blueprint == 'admin'%}
+            <a href="{{url_for('admin.admin_customers', rowid = customer.rowid)}}" class="btn btn-danger">Delete</a>
+            {%endif%}
+        </div>
+      </div>
+    </div>
+{%endfor%}
+</div>
+{%endblock%}

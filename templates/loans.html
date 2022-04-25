@@ -1,0 +1,62 @@
+{%extends 'layout.html'%}
+{%block title%}Loans{%endblock%}
+{%block loanactive%}active{%endblock%}
+{%block content%}
+<!-- return modal -->
+<div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Return date</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method = 'POST'>
+                <input type="hidden" value="" name="loanid">
+                <input type="date" name="returndate" class="form-control" format="dd-mm-yyyy" placeholder="DD-MM-YYYY">
+                <input type="submit" value="Return book" class="btn btn-primary margined">
+                </form>
+                </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<a type="button" class="btn btn-info btn-lg margined" href="./">All loans</a>
+<a type="button" class="btn btn-info btn-lg margined" href="./late">Late loans</a>
+<!-- loan collection. always shown -->
+<div class="row row-cols-1 row-cols-md-4 g-4 margined">
+    {%for loan in loans%}
+        <div class="col">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Loan number: {{loan.loan_id}}</h5>
+                    <p class="card-text">customer: {{loan.customername.name}} <br> Book: {{loan.bookname.name}} <br> Date loaned: {{loan.loan_date.date()}} <br> Date returned: {{loan.return_date}}</p>
+                </div>
+                {%if request.blueprint == 'user'%}
+                    {%if loan.return_date == None%}
+                        <button type="button" data-bs-whatever="{{loan.loan_id}}" data-bs-toggle="modal" data-bs-target="#loanModal" class="btn btn-info margined">Return book</button>
+                    {%else%}
+                        <button type="button" class="btn btn-info margined disabled">already returned</button>
+                    {%endif%}
+                {%endif%}
+                <div class="card-footer">
+                    <small class="text-muted">is late?: {{loan.islate}}</small> 
+                </div>
+            </div>
+        </div>
+    {%endfor%}
+</div>
+<script>
+    // gets the loan.loan_id from the specific pressed button and transfers it to a
+    // hidden button inside the modal so it can send 2 variables at the same time
+    var exampleModal = document.getElementById('loanModal')
+    exampleModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget
+        var loanid = button.getAttribute('data-bs-whatever')
+        var modalBodyInput = exampleModal.querySelector('.modal-body input')
+        modalBodyInput.value = loanid
+    })
+</script>
+{%endblock%}

@@ -1,0 +1,120 @@
+{%extends 'layout.html'%}
+{%block title%}Books{%endblock%}
+{%block bookactive%}active{%endblock%}
+{%block content%}
+<!-- loan modal -->
+<div class="modal fade" id="loanModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Who is Loaning?</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method = 'GET' action="{{url_for('user.user_loans')}}">
+                <select name="customerid" class="form-select">
+                        {%for customer in customers%}
+                            <option value="{{customer.rowid}}">{{customer.name}}</option>
+                        {%endfor%}
+                </select>
+                <input type="hidden" value="" name="bookid">
+                <input type="submit" value="Loan" class="btn btn-primary margined">
+                </form>
+                </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+<a type="button" class="btn btn-info btn-lg margined" href="./">All books</a>
+{%if request.blueprint == 'admin'%}
+    <a type="button" class="btn btn-info btn-lg margined" href="./add">Add a book</a>
+{%endif%}
+<a type="button" class="btn btn-info btn-lg margined" href="./search">Search a book</a>
+<!-- shows add book form when pressed -->
+{%if action == 'add'%}
+    <form method="POST">
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="text" name="name" placeholder="Book name" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Book name:</label>
+            <div id="passwordHelpInline" class="form-text" class="form-text">
+                leave blank if unknown
+            </div>
+        </div>
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="text" name="author" placeholder="author name" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Author name:</label>
+            <div id="passwordHelpInline" class="form-text">
+                leave blank if unknown
+            </div>
+        </div>
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="number" name="year" placeholder="2022" step="1" min="1800" max="2022" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Year published:</label>
+            <div id="passwordHelpInline" class="form-text">
+                leave blank if unknown
+            </div>
+        </div>
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="number" name="type" value="1" placeholder="1" min="1" max="3" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Book loan time allowed</label>
+            <div id="passwordHelpInline" class="form-text">
+                1 - 10 days | 2 - 5 days | 3 - 2 days
+            </div>
+        </div>
+        <div class="form-floating margined" style="width: 15%">
+            <input type="submit" class="form-control" id="floatingInputValue">
+        </div>
+    </form>
+<!-- shows search book form when pressed -->
+{%elif action == 'search'%}
+    <form method="post">
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="text" name="name" placeholder="Book name" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Book name:</label>
+        </div>
+    </form>
+{%endif%}
+<!-- book collection. always shown -->
+<div class="row row-cols-1 row-cols-md-6 g-4 margined">
+{%for book in books%}
+    <div class="col">
+        <div class="card h-100">
+            <img src="{{url_for('static', filename='')}}{{book.rowid}}.jpeg" class="card-img-top img-fluid" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{book.name}}</h5>
+                <p class="card-text">Author: {{book.author}} <br> Year published: {{book.year}}</p>
+                {%if request.blueprint == 'admin'%}
+                <a href="{{url_for('admin.admin_books', rowid = book.rowid)}}" class="btn btn-danger margined">Delete</a>
+                {%elif book.isloaned == False%}
+                    <button type="button" data-bs-whatever="{{book.rowid}}" data-bs-toggle="modal" data-bs-target="#loanModal" class="btn btn-info margined">Loan</button>
+                {%else%}
+                    <button type="button" class="btn btn-info margined disabled">Already Loaned</button>
+                {%endif%}
+            </div>
+            <div class="card-footer">
+                {%if book.book_type == 1 %}
+                    <small class="text-muted">Max loan time: 10 Days</small>
+                {%elif book.book_type == 2 %}
+                    <small class="text-muted">Max loan time: 5 Days</small>
+                {%else%}
+                    <small class="text-muted">Max Loan time: 2 Days</small>
+                {%endif%}
+            </div>
+        </div>
+    </div>
+{%endfor%}
+</div>
+<script>
+    // gets the book.rowid from the specific pressed button and transfers it to a
+    // hidden button inside the modal so it can send 2 variables at the same time
+    var exampleModal = document.getElementById('loanModal')
+    exampleModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget
+        var bookid = button.getAttribute('data-bs-whatever')
+        var modalBodyInput = exampleModal.querySelector('.modal-body input')
+        modalBodyInput.value = bookid
+    })
+</script>
+{%endblock%}
