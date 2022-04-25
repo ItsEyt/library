@@ -44,3 +44,7 @@ def user_loans(action):
 def user_customers(action):
     if action == 'search': return render_template('customers.html',action = action, customers = getdata(Customer, request.form.get('name')))
     return render_template('customers.html',action = action, customers = getdata(Customer))
+
+@user.route('/about')
+def user_about():
+    return render_template('about.html')

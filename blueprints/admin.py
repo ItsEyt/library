@@ -39,3 +39,7 @@ def admin_loans(action):
     if action == 'late':
         return render_template('loans.html', loans = getdata(Loans, 'late')) 
     return render_template('loans.html', loans = getdata(Loans)) 
+
+@admin.route('/about')
+def admin_about():
+    return render_template('about.html')
