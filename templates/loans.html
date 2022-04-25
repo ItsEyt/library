@@ -24,7 +24,7 @@
     </div>
 </div>
 <a type="button" class="btn btn-info btn-lg margined" href="./">All loans</a>
-<a type="button" class="btn btn-info btn-lg margined" href="./late">Late loans</a>
+<a type="button" class="btn btn-info btn-lg margined" href="./late">Late returns</a>
 <!-- loan collection. always shown -->
 <div class="row row-cols-1 row-cols-md-4 g-4 margined">
     {%for loan in loans%}
@@ -42,7 +42,11 @@
                     {%endif%}
                 {%endif%}
                 <div class="card-footer">
-                    <small class="text-muted">is late?: {{loan.islate}}</small> 
+                    {%if loan.islate%}
+                    <small cass="text-muted" style="color: red">late return</small>
+                    {%else%}
+                    <small cass="text-muted" style="color: blue">returned in time</small> 
+                    {%endif%}
                 </div>
             </div>
         </div>
