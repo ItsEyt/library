@@ -28,7 +28,8 @@ def addrow(row):
 # removes an object from his table
 def removerow(table,rid):
     with mydb.session as session:
-        session.query(table).filter(table.rowid == rid).delete()
+        for row in session.query(table).filter(table.rowid == rid).all():
+            row.deleted = True
         session.commit()
 
 def returnloan(loanid, date):

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String
 from modules.db import Base
 
 class Customer(Base):
@@ -8,3 +8,4 @@ class Customer(Base):
     name = Column(String(50), nullable = False)
     city = Column(String())
     age = Column(Integer())
+    deleted = Column(Boolean(), nullable = False, default = False)

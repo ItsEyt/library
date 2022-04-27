@@ -34,7 +34,7 @@
 <a type="button" class="btn btn-info btn-lg margined" href="./search">Search a book</a>
 <!-- shows add book form when pressed -->
 {%if action == 'add'%}
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="form-floating margined" style="width: 15%;">
             <input type="text" name="name" placeholder="Book name" class="form-control" id="floatingInputValue">
             <label for="floatingInputValue">Book name:</label>
@@ -63,6 +63,13 @@
                 1 - 10 days | 2 - 5 days | 3 - 2 days
             </div>
         </div>
+        <div class="form-floating margined" style="width: 15%;">
+            <input type="file" name="file" class="form-control" id="floatingInputValue">
+            <label for="floatingInputValue">Choose a File</label>
+            <div id="passwordHelpInline" class="form-text">
+                Book cover photo
+            </div>
+        </div>
         <div class="form-floating margined" style="width: 15%">
             <input type="submit" class="form-control" id="floatingInputValue">
         </div>
@@ -79,9 +86,10 @@
 <!-- book collection. always shown -->
 <div class="row row-cols-1 row-cols-md-6 g-4 margined">
 {%for book in books%}
+    {%if book.deleted == False%}
     <div class="col">
         <div class="card h-100">
-            <img src="{{url_for('static', filename='')}}{{book.rowid}}.jpeg" class="card-img-top img-fluid" alt="...">
+            <img src="{{url_for('static', filename='')}}{{book.picname}}" class="card-img-top img-fluid" alt="...">
             <div class="card-body">
                 <h5 class="card-title">{{book.name}}</h5>
                 <p class="card-text">Author: {{book.author}} <br> Year published: {{book.year}}</p>
@@ -104,6 +112,7 @@
             </div>
         </div>
     </div>
+    {%endif%}
 {%endfor%}
 </div>
 <script>

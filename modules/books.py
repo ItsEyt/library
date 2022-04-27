@@ -1,3 +1,4 @@
+from email.policy import default
 from sqlalchemy import Boolean, Column, Integer, String
 from modules.db import Base
 
@@ -10,3 +11,5 @@ class Book(Base):
     year = Column(Integer())
     book_type = Column(Integer(), nullable = False)
     isloaned = Column(Boolean(), nullable = False, default = False)
+    deleted = Column(Boolean(), nullable = False, default = False)
+    picname = Column(String(50))

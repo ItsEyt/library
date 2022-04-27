@@ -1,8 +1,11 @@
-from flask import Blueprint, render_template, request
+import os
+from flask import Blueprint, flash, redirect, render_template, request
 from modules.books import Book
 from modules.customers import Customer
 from modules.loans import Loans
 from modules.mainfunctions import getdata, addrow, removerow
+from modules import filehelper as fh
+from werkzeug.utils import secure_filename
 
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
@@ -15,8 +18,18 @@ def admin_home():
 def admin_books(action):
     if request.method == 'POST':
         if action == 'add':
+            if 'file' not in request.files:
+                flash('No file part')
+                return redirect(request.url)
+            file = request.files['file']
+            if file.filename == '':
+                flash('No selected file')
+                return redirect(request.url)
+            if file and fh.allowed_file(file.filename):
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(fh.UPLOAD_FOLDER, filename))
             newbook = Book(name = request.form.get('name'), author = request.form.get('author'), \
-                      year = request.form.get('year'), book_type = request.form.get('type'))
+                      year = request.form.get('year'), book_type = request.form.get('type'), picname = filename)
             addrow(newbook)
         if action == 'search': return render_template('books.html', action = action, books = getdata(Book, request.form.get('name')))
     elif request.method == 'GET': removerow(Book, request.args.get('rowid'))
