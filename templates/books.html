@@ -14,7 +14,9 @@
                 <form method = 'GET' action="{{url_for('user.user_loans')}}">
                 <select name="customerid" class="form-select">
                         {%for customer in customers%}
+                            {%if customer.deleted == False%}
                             <option value="{{customer.rowid}}">{{customer.name}}</option>
+                            {%endif%}
                         {%endfor%}
                 </select>
                 <input type="hidden" value="" name="bookid">
