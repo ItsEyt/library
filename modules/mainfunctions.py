@@ -16,7 +16,7 @@ def getdata(table, query = ''): # to get late returns query is used as a simple 
     elif table == Loans:
         info = mydb.session.query(table).filter(table.islate == True).all()
     else:
-        info = mydb.session.query(table).filter(table.name.like(f'%{query}%')).all()
+        info = mydb.session.query(table).filter(table.name.like(f'%{query}%')).order_by(table.name).all()
     return info
 
 # adds an object to his table
@@ -42,13 +42,13 @@ def isreturnlate(loanid):
     with mydb.session as session:
         for l in session.query(Loans).filter(Loans.loan_id == loanid).all():
             if l.bookname.book_type == 1:
-                if l.return_date - l.loan_date < timedelta(days = 10):
+                if l.return_date - l.loan_date <= timedelta(days = 10):
                     session.query(Loans).filter(Loans.loan_id == loanid).update({"islate": False})
             elif l.bookname.book_type == 2:
-                if l.return_date - l.loan_date < timedelta(days = 5):
+                if l.return_date - l.loan_date <= timedelta(days = 5):
                     session.query(Loans).filter(Loans.loan_id == loanid).update({"islate": False})
             else:
-                if l.return_date - l.loan_date < timedelta(days = 2):
+                if l.return_date - l.loan_date <= timedelta(days = 2):
                     session.query(Loans).filter(Loans.loan_id == loanid).update({"islate": False})
         session.commit()
 
