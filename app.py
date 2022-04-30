@@ -17,7 +17,7 @@ def home():
         return redirect(url_for("user.user_home"))
     return render_template('login.html')
 
-def main():
-    api.run()
+# def main():
+#     api.run()
 
-if __name__ == "__main__": main()
+# if __name__ == "__main__": main()

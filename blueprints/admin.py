@@ -19,12 +19,10 @@ def admin_books(action):
     if request.method == 'POST':
         if action == 'add':
             if 'file' not in request.files:
-                flash('No file part')
-                return redirect(request.url)
+                return render_template('books.html',action = action, books = getdata(Book))
             file = request.files['file']
             if file.filename == '':
-                flash('No selected file')
-                return redirect(request.url)
+                return render_template('books.html',action = action, books = getdata(Book))
             if file and fh.allowed_file(file.filename):
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(fh.UPLOAD_FOLDER, filename))
