@@ -49,14 +49,14 @@
 {%for customer in customers%}
     {%if customer.deleted == False%}
     <div class="col">
-      <div class="card h-100">
+      <div class="card h-100 border-dark mb-3 card-margin">
         <div class="card-body">
             <h5 class="card-title">{{customer.name}}</h5>
-            <p class="card-text">City: {{customer.city}} <br> Age: {{customer.age}} <br> deleted: {{customer.deleted}}</p>
-            {%if request.blueprint == 'admin'%}
-            <a href="{{url_for('admin.admin_customers', rowid = customer.rowid)}}" class="btn btn-danger">Delete</a>
-            {%endif%}
+            <p class="card-text">City: {{customer.city}} <br> Age: {{customer.age}}</p>
         </div>
+            {%if request.blueprint == 'admin'%}
+            <a href="{{url_for('admin.admin_customers', rowid = customer.rowid)}}" class="btn btn-danger margined">Delete</a>
+            {%endif%}
       </div>
     </div>
     {%endif%}

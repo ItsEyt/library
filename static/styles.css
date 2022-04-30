@@ -19,9 +19,9 @@
 
 html, body {
     height: 100%;
-  }
+}
 
-  body {
+body {
   display: flex;
   flex-direction: column;
 }
@@ -35,7 +35,28 @@ html, body {
 }
 
 .card-img-top {
-  width: 100%;
-  height: 20vw;
-  object-fit: fill;
+  max-width: 20vw;
+  max-height: 50vh;
+  object-fit: inherit;
+}
+.card-margin{
+  margin-left: 10%;
+  margin-right: 10%
+}
+
+.bg-white{
+  background-color: white;
+}
+
+@media screen and (max-width: 767px) {
+  .card-img-top{
+    max-height: 100%;
+    max-width: 100%;
+    display: inline-flex;
+  }
+
+  .card{
+    margin-left: 5vh;
+    margin-right: 5vh;
+  }
 }
